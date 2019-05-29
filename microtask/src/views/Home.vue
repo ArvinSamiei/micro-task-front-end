@@ -1,13 +1,22 @@
 <template>
-  <HelloWorld />
+  
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
-
   export default {
-    components: {
-      HelloWorld
-    }
+    name: 'home',
+    data: () => ({
+      admins: [
+        ['Management', 'people_outline'],
+        ['Settings', 'settings']
+      ],
+      cruds: [
+        ['Create', 'add'],
+        ['Read', 'insert_drive_file'],
+        ['Update', 'update'],
+        ['Delete', 'delete']
+      ]
+    })
   }
 </script>
+
