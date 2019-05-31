@@ -33,7 +33,7 @@ export default {
     props: ['contributions', 'title', 'subtitle', 'image', 'color'],
     data() {
         return {
-
+            
         }
     }
 }

@@ -1,30 +1,17 @@
 <template>
-  <div style="height: 100%; width: 100%;">  
-    <Toolbar></Toolbar>
-    <NavbarDrawer></NavbarDrawer>
-    <v-content style="height: 100%;">
-      <CardList ></CardList>
-    </v-content>
-    <Footer></Footer>
-  </div>
-  
+    <div class="home">
+        <v-content >
+            <CardList></CardList>
+        </v-content>
+    </div>
 </template>
 
 <script>
-import CardList from "@/components/CardList";  
-import Toolbar from "@/components/Toolbar";
-import NavbarDrawer from "@/components/NavbarDrawer";
-import Footer from "@/components/Footer";
-
-
+import CardList from "@/components/CardList";
 export default {
-    name: 'home',
+    name: 'Home',
     components: {
-      Toolbar,
-      NavbarDrawer,
-      CardList,
-      Footer
+        CardList
     }
-  }
+}
 </script>
-

@@ -1,17 +1,28 @@
 <template>
-  <v-app>
-    <Home>
-    </Home>
+  <div id="app">
+    <v-app>
+    <Toolbar></Toolbar>
+    <NavbarDrawer></NavbarDrawer>
+    
+    <router-view/>
+    <Footer></Footer>
   </v-app>
+  </div>
 </template>
 
-<script>
-import Home from "@/views/Home";
+<script>  
+import Toolbar from "@/components/Toolbar";
+import NavbarDrawer from "@/components/NavbarDrawer";
+import Footer from "@/components/Footer";
+
 
 export default {
-  name: "App",
-  components: {
-    Home
+    name: 'app',
+    components: {
+      Toolbar,
+      NavbarDrawer,
+      Footer
+    }
   }
-};
 </script>
+
