@@ -1,22 +1,30 @@
 <template>
+  <div style="height: 100%; width: 100%;">  
+    <Toolbar></Toolbar>
+    <NavbarDrawer></NavbarDrawer>
+    <v-content style="height: 100%;">
+      <CardList ></CardList>
+    </v-content>
+    <Footer></Footer>
+  </div>
   
 </template>
 
 <script>
-  export default {
+import CardList from "@/components/CardList";  
+import Toolbar from "@/components/Toolbar";
+import NavbarDrawer from "@/components/NavbarDrawer";
+import Footer from "@/components/Footer";
+
+
+export default {
     name: 'home',
-    data: () => ({
-      admins: [
-        ['Management', 'people_outline'],
-        ['Settings', 'settings']
-      ],
-      cruds: [
-        ['Create', 'add'],
-        ['Read', 'insert_drive_file'],
-        ['Update', 'update'],
-        ['Delete', 'delete']
-      ]
-    })
+    components: {
+      Toolbar,
+      NavbarDrawer,
+      CardList,
+      Footer
+    }
   }
 </script>
 
