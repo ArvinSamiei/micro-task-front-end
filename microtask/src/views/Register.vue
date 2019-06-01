@@ -5,25 +5,29 @@
         v-model="firstName"
         v-validate="'required|max:20'"
         :counter="20"
-        :error-messages="errors.collect('firstName')"
+        :error-messages="errors.collect('first name')"
         label="First Name"
-        data-vv-name="firstName"
+        data-vv-name="first name"
         required
       ></v-text-field>
       <v-text-field
         v-model="lastName"
         v-validate="'required|max:20'"
         :counter="20"
-        :error-messages="errors.collect('lastName')"
+        :error-messages="errors.collect('last name')"
         label="Last Name"
-        data-vv-name="lastName"
+        data-vv-name="last name"
         required
       ></v-text-field>
-
-      <p>Gender</p>
-      <v-radio-group v-model="radios" :mandatory="false">
-        <v-radio label="Male" value="radio-1"></v-radio>
-        <v-radio label="Female" value="radio-2"></v-radio>
+      <v-radio-group
+        label="Gender"
+        v-model="gender"
+        v-validate="'required'"
+        data-vv-name="gender"
+        :error-messages="errors.collect('gender')"
+      >
+        <v-radio label="Male" value="male"></v-radio>
+        <v-radio label="Female" value="female"></v-radio>
       </v-radio-group>
 
       <v-text-field
@@ -31,27 +35,28 @@
         v-validate="'required|max:25'"
         :counter="25"
         :error-messages="errors.collect('username')"
-        label="user name"
+        label="Username"
         data-vv-name="username"
         required
       ></v-text-field>
       <v-text-field
         v-model="password"
-        v-validate="'required|max:100'"
+        v-validate="'required'"
         :counter="100"
         :error-messages="errors.collect('password')"
         label="Password"
         data-vv-name="password"
         required
         type="password"
+        ref="password"
       ></v-text-field>
       <v-text-field
         v-model="confirmPassword"
-        v-validate="'required|max:100'"
+        v-validate="'required|confirmed:password'"
         :counter="100"
-        :error-messages="errors.collect('confirmPassword')"
+        :error-messages="errors.collect('confirm password')"
         label="Confirm Password"
-        data-vv-name="confirmPassword"
+        data-vv-name="confirm password"
         required
         type="password"
       ></v-text-field>
@@ -64,19 +69,19 @@
         required
       ></v-text-field>
       <v-text-field
-        v-model="natinalid"
+        v-model="nationalid"
         v-validate="'required'"
-        :error-messages="errors.collect('nationalid')"
+        :error-messages="errors.collect('national id')"
         label="National ID"
-        data-vv-name="nationalid"
+        data-vv-name="national id"
         required
       ></v-text-field>
       <v-text-field
         v-model="phoneNum"
         v-validate="'required'"
-        :error-messages="errors.collect('phoneNum')"
+        :error-messages="errors.collect('phone number')"
         label="Phone Number"
-        data-vv-name="phoneNum"
+        data-vv-name="phone number"
         required
       ></v-text-field>
       <v-select
@@ -106,6 +111,8 @@
 <script>
 import Vue from "vue";
 import VeeValidate from "vee-validate";
+import { mapActions } from 'vuex'
+
 
 Vue.use(VeeValidate);
 
@@ -115,9 +122,17 @@ export default {
   },
 
   data: () => ({
-    name: "",
+    firstName: "",
+    lastName: "",
+    gender: null,
+    username: '',
     email: "",
-    select: null,
+    nationalid: '',
+    phoneNum: '',
+    country: null,
+    city: '',
+    password: '',
+    confirmPassword: '', 
     countries: [
       "Afghanistan",
       "Albania",
@@ -331,16 +346,14 @@ export default {
     dictionary: {
       attributes: {
         email: "E-mail Address"
-        // custom attributes
       },
       custom: {
         name: {
           required: () => "can not be empty",
-          max: "The name field may not be greater than 10 characters"
-          // custom messages
+          max: "The name field may not be greater than 20 characters"
         },
-        select: {
-          required: "Select field is required"
+        country: {
+          required: "Country field is required"
         }
       }
     }
@@ -351,14 +364,42 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'register'
+    ]),
     submit() {
-      this.$validator.validateAll();
+      this.$validator.validateAll().then((response) => {
+          if (response) {
+              const payload = {
+                firstName: this.firstName,
+                lastName: this.lastName,
+                gender: this.gender,
+                username: this.username,
+                email: this.email,
+                nationalid: this.nationalid,
+                phoneNum: this.phoneNum,
+                country: this.country,
+                city: this.city,
+                password: this.password,
+              }
+              console.log(payload)
+              this.register(payload)
+              this.clear()
+          }
+      });
     },
     clear() {
-      this.name = "";
-      this.email = "";
-      this.select = null;
-      this.checkbox = null;
+      this.firstName =  "",
+      this.lastName = "",
+      this.gender = null,
+      this.username = '',
+      this.email = "",
+      this.nationalid = '',
+      this.phoneNum = '',
+      this.country = null,
+      this.city = '',
+      this.password = '',
+      this.confirmPassword = '',
       this.$validator.reset();
     }
   }
