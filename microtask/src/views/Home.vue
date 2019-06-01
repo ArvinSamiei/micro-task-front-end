@@ -1,8 +1,8 @@
 <template>
     <div class="home">
-        <v-content >
+        <!-- <v-content > -->
             <CardList></CardList>
-        </v-content>
+        <!-- </v-content> -->
     </div>
 </template>
 

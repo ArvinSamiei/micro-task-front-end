@@ -3,8 +3,9 @@
     <v-app>
     <Toolbar></Toolbar>
     <NavbarDrawer></NavbarDrawer>
-    
+    <v-content >
     <router-view/>
+    </v-content>
     <Footer></Footer>
   </v-app>
   </div>
