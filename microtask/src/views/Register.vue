@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%; max-width: 500px; margin: auto; margin-top: 20px;">
+  <div style="height:100%; max-width: 500px; margin: auto; margin-top: 20px; margin-bottom: 20px;">
     <form>
       <v-text-field
         v-model="firstName"
@@ -28,6 +28,16 @@
       >
         <v-radio label="Male" value="male"></v-radio>
         <v-radio label="Female" value="female"></v-radio>
+      </v-radio-group>
+      <v-radio-group
+        label="Type"
+        v-model="type"
+        v-validate="'required'"
+        data-vv-name="type"
+        :error-messages="errors.collect('type')"
+      >
+        <v-radio label="Worker" value="worker"></v-radio>
+        <v-radio label="Requester" value="requester"></v-radio>
       </v-radio-group>
 
       <v-text-field
@@ -102,8 +112,8 @@
         data-vv-name="city"
         required
       ></v-text-field>
-      <v-btn @click="submit">submit</v-btn>
-      <v-btn @click="clear">clear</v-btn>
+      <v-btn @click.stop.prevent="submit()" style="margin-top: 20px; color: green;" >submit</v-btn>
+      <v-btn @click="clear" style="margin-top: 20px; color: red;">clear</v-btn>
     </form>
   </div>
 </template>
@@ -125,6 +135,7 @@ export default {
     firstName: "",
     lastName: "",
     gender: null,
+    type: null,
     username: '',
     email: "",
     nationalid: '',
@@ -374,6 +385,7 @@ export default {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 gender: this.gender,
+                type: this.type,
                 username: this.username,
                 email: this.email,
                 nationalid: this.nationalid,
@@ -382,9 +394,9 @@ export default {
                 city: this.city,
                 password: this.password,
               }
-              console.log(payload)
               this.register(payload)
               this.clear()
+              this.$router.push("/");
           }
       });
     },
@@ -392,6 +404,7 @@ export default {
       this.firstName =  "",
       this.lastName = "",
       this.gender = null,
+      this.type = null,
       this.username = '',
       this.email = "",
       this.nationalid = '',

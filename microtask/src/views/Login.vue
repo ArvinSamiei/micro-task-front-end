@@ -20,8 +20,8 @@
         required
         type="password"
       ></v-text-field>
-      <v-btn @click="submit">submit</v-btn>
-      <v-btn @click="clear">clear</v-btn>
+      <v-btn @click.stop.prevent="submit()" style="margin-top: 20px; color: green;" >submit</v-btn>
+      <v-btn @click="clear" style="margin-top: 20px; color: red;">clear</v-btn>
     </form>
   </div>
 </template>
@@ -29,6 +29,7 @@
 <script>
 import Vue from "vue";
 import VeeValidate from "vee-validate";
+import { mapActions } from 'vuex';
 
 Vue.use(VeeValidate);
 
@@ -36,37 +37,35 @@ export default {
   $_veeValidate: {
     validator: "new"
   },
-
-  data: () => ({
-    dictionary: {
-      attributes: {
-        email: "E-mail Address"
-        // custom attributes
-      },
-      custom: {
-        name: {
-          required: () => "can not be empty",
-          max: "The name field may not be greater than 10 characters"
-        },
-        select: {
-          required: "Select field is required"
-        }
-      }
+  data: () => (
+    {
+      username: '',
+      password: ''
     }
-  }),
-
+  ),
   mounted() {
     this.$validator.localize("en", this.dictionary);
   },
-
   methods: {
+    ...mapActions([
+      'login'
+    ]),
     submit() {
-      this.$validator.validateAll();
+      this.$validator.validateAll().then((res) => {
+          if (res) {
+            const payload = {
+                username: this.username,
+                password: this.password
+              }
+              this.login(payload)
+              this.clear()
+              this.$router.push("/");
+          }
+      });
     },
     clear() {
-      this.name = "";
-      this.email = "";
-      this.select = null;
+      this.username = "";
+      this.password
       this.$validator.reset();
     }
   }
