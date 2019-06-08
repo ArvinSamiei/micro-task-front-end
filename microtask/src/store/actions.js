@@ -1,33 +1,69 @@
 export default {
-  register: ({ commit }, payload) => {
-    const axios = require('axios')
-    console.log('payload', payload)
-    axios.post('http://127.0.0.1:8000/profilemanager/register', JSON.stringify(payload))
-      .then((res) => {
-        console.log(res)
-        if (res.data === 'SUCCESS') {
-          commit('register', res)
-        } else if (res.data === 'username') {
-
-        } else if (res.data === 'email') {
-
-        } else if (res.data === 'phone number') {
-
-        }
+  login ({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      commit('auth_request')
+      fetch('http://localhost:8000/token-auth/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
       })
-      .catch((error) => {
-        console.error('error: ', error)
-      })
+        .then(res => {
+          if (res.status !== 200) {
+            throw new Error('Not 200 response')
+          } else {
+            return res.json()
+          }
+        })
+        .then(json => {
+          localStorage.setItem('token', json.token)
+          commit('auth_success',
+            {
+              token: json.token,
+              user: json.user
+            })
+          resolve(json)
+        })
+        .catch(err => {
+          commit('auth_error')
+          localStorage.removeItem('token')
+          reject(err)
+        })
+    })
   },
-  login: ({ commit }, payload) => {
-    const axios = require('axios')
-    console.log('payload', payload)
-    axios.post('http://127.0.0.1:8000/profilemanager/login', JSON.stringify(payload))
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((error) => {
-        console.error('error: ', error)
-      })
+  register ({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      commit('auth_request')
+      // // axios({
+      // //   url: 'http://localhost:8000/profilemanager/register',
+      // //   data: user,
+      // //   method: 'POST'
+      // // })
+      //   .then(resp => {
+      //     const token = resp.data.token
+      //     const user = resp.data.user
+      //     localStorage.setItem('token', token)
+      //     axios.defaults.headers.common['Authorization'] = token
+      //     commit('auth_success', token, user)
+      //     resolve(resp)
+      //   })
+      //   .catch(err => {
+      //     commit('auth_error', err)
+      //     localStorage.removeItem('token')
+      //     reject(err)
+      //   })
+    })
+  },
+  logout ({ commit }) {
+    return new Promise((resolve, reject) => {
+      commit('logout')
+      localStorage.removeItem('token')
+      // delete fetch.defaults.headers.common['Authorization']
+      resolve()
+    })
+  },
+  nav ({ commit }) {
+    commit('nav')
   }
 }

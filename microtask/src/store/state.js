@@ -1,7 +1,6 @@
-import profile from '@/data/profile'
-import messages from '@/data/messages'
-
 export default {
-  profile,
-  messages
+  status: '',
+  token: localStorage.getItem('token') || '',
+  user: { },
+  nav: false
 }

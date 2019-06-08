@@ -22,6 +22,14 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login')
+    },
+    {
+      path: '/secure',
+      name: 'secure',
+      component: import('@/components/Secure'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

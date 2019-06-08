@@ -20,7 +20,7 @@
         required
         type="password"
       ></v-text-field>
-      <v-btn @click.stop.prevent="submit()" style="margin-top: 20px; color: green;" >submit</v-btn>
+      <v-btn @click.stop.prevent="submit()" style="margin-top: 20px; color: green;" >login</v-btn>
       <v-btn @click="clear" style="margin-top: 20px; color: red;">clear</v-btn>
     </form>
   </div>
@@ -29,7 +29,6 @@
 <script>
 import Vue from "vue";
 import VeeValidate from "vee-validate";
-import { mapActions } from 'vuex';
 
 Vue.use(VeeValidate);
 
@@ -47,26 +46,25 @@ export default {
     this.$validator.localize("en", this.dictionary);
   },
   methods: {
-    ...mapActions([
-      'login'
-    ]),
     submit() {
       this.$validator.validateAll().then((res) => {
           if (res) {
-            const payload = {
-                username: this.username,
-                password: this.password
-              }
-              this.login(payload)
+            let username = this.username
+            let password = this.password
+            this.$store.dispatch('login', { username, password })
+            .then(() => this.$router.push('/'))
+            .catch(err => { 
+              console.log(err)
+              this.$router.push('/login')
               this.clear()
-              this.$router.push("/");
+            })
           }
       });
     },
     clear() {
-      this.username = "";
-      this.password
-      this.$validator.reset();
+      this.username = ''
+      this.password = ''
+      this.$validator.reset()
     }
   }
 };

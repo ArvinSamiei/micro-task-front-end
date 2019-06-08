@@ -1,27 +1,21 @@
 export default {
-  login: (state, user) => {
-    state['firstName'] = user['firstName']
-    state['lastName'] = user['lastName']
-    state['username'] = user['username']
-    state['type'] = user['type']
-    state['email'] = user['email']
-    state['nationalid'] = user['nationalid']
-    state['phoneNum'] = user['phoneNum']
-    state['country'] = user['country']
-    state['city'] = user['city']
+  auth_request (state) {
+    state.status = 'loading'
   },
-  clear: (state) => {
-    state['firstName'] = ''
-    state['lastName'] = ''
-    state['username'] = ''
-    state['type'] = ''
-    state['email'] = ''
-    state['nationalid'] = ''
-    state['phoneNum'] = ''
-    state['country'] = ''
-    state['city'] = ''
+  auth_success (state, { token, user }) {
+    state.status = 'success'
+    state.token = token
+    console.log(user)
+    state.user = user
   },
-  register: (state, res) => {
-    
+  auth_error (state) {
+    state.status = 'error'
+  },
+  logout (state) {
+    state.status = ''
+    state.token = ''
+  },
+  nav (state) {
+    state.nav = !state.nav
   }
 }
