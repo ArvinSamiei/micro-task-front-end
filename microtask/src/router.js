@@ -26,7 +26,15 @@ export default new Router({
     {
       path: '/secure',
       name: 'secure',
-      component: import('@/components/Secure'),
+      component: () => import('@/components/Secure'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: () => import('@/views/Setting'),
       meta: {
         requiresAuth: true
       }

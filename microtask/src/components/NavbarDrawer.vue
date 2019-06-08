@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" hide-overlay app stateless floating>
+  <v-navigation-drawer :value="drawer" hide-overlay app stateless floating>
     <v-toolbar flat class="transparent">
       <v-list class="pa-0">
         <v-list-tile avatar>
@@ -7,7 +7,7 @@
             <img src="https://randomuser.me/api/portraits/women/21.jpg">
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title> {{  username }} </v-list-tile-title>
+            <v-list-tile-title>{{ username }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -31,42 +31,31 @@
 
 <script>
 export default {
-  data() {
-    return {
-      items: [
-        { title: "Home", icon: "home" },
-        { title: "Login", icon: "person_add" }
-      ],
-      username: 'Users'
-    };
-  },
   computed: {
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
     },
     drawer: function() {
       return this.$store.getters.nav;
-    }
-  },
-  mounted() {
-    if (this.isLoggedIn) {
-      this.items = [
+    },
+    items: function() {
+      if (this.isLoggedIn) {
+        return [
+          { title: "Home", icon: "home" },
+          { title: "Dashboard", icon: "dashboard" },
+          { title: "Settings", icon: "settings" },
+          { title: "Wallet", icon: "money" },
+          { title: "Logout", icon: "exit_to_app" }
+        ] 
+      } else {
+        return [
         { title: "Home", icon: "home" },
-        { title: "Dashboard", icon: "dashboard" },
-        { title: "Settings", icon: "settings" },
-        { title: "Wallet", icon: "money" },
-        { title: "Logout", icon: "exit_to_app" }
-      ];
-      
-      fetch("http://localhost:8000/profilemanager/current_user/", {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem("token")}`
-        }
-      })
-        .then(res => res.json())
-        .then(json => {
-           this.username = json.username 
-        });
+        { title: "Login", icon: "person_add" }
+      ]
+      } 
+    },
+    username: function() {
+        return this.$store.getters.user.username ? this.$store.getters.user.username : 'Users'
     }
   },
   methods: {

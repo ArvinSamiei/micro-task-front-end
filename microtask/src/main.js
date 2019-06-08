@@ -6,8 +6,8 @@ import store from './store/index'
 import Vuetify from 'vuetify'
 import Axios from 'axios'
 import 'vuetify/dist/vuetify.min.css'
-
 Vue.use(Vuetify)
+
 Vue.prototype.$http = Axios
 const token = localStorage.getItem('token')
 if (token) {
