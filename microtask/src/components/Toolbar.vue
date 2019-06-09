@@ -3,7 +3,7 @@
   <v-toolbar dark color="primary" fixed app>
     <v-toolbar-side-icon @click.stop="nav()"></v-toolbar-side-icon>
 
-    <v-toolbar-title class="white--text">Cradsourcing</v-toolbar-title>
+    <v-toolbar-title class="white--text">Crowdsourcing</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
