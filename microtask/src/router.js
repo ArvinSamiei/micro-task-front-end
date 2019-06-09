@@ -38,6 +38,14 @@ export default new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/changepass',
+      name: 'changepass',
+      component: () => import('@/views/ChangePassword'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

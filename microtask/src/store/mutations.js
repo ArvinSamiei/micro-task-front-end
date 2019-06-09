@@ -14,6 +14,7 @@ export default {
   logout (state) {
     state.status = ''
     state.token = ''
+    state.user = {}
   },
   nav (state) {
     state.nav = !state.nav

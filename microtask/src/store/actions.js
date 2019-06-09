@@ -2,28 +2,23 @@ export default {
   login ({ commit }, data) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      fetch('http://localhost:8000/token-auth/', {
-        method: 'POST',
+      const axios = require('axios')
+      axios({
+        method: 'post',
+        url: 'http://localhost:8000/token-auth/',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        data: JSON.stringify(data)
       })
         .then(res => {
-          if (res.status !== 200) {
-            throw new Error('Not 200 response')
-          } else {
-            return res.json()
-          }
-        })
-        .then(json => {
-          localStorage.setItem('token', json.token)
+          localStorage.setItem('token', res.data.token)
           commit('auth_success',
             {
-              token: json.token,
-              user: json.user
+              token: res.data.token,
+              user: res.data.user
             })
-          resolve(json)
+          resolve(res)
         })
         .catch(err => {
           commit('auth_error')
@@ -35,29 +30,23 @@ export default {
   register ({ commit }, data) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      console.log(JSON.stringify(data))
-      fetch('http://localhost:8000/profilemanager/users/', {
-        method: 'POST',
+      const axios = require('axios')
+      axios({
+        method: 'post',
+        url: 'http://localhost:8000/core/users/',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        datas: JSON.stringify(data)
       })
         .then(res => {
-          if (res.status !== 201) {
-            throw new Error('Not 201 response')
-          } else {
-            return res.json()
-          }
-        })
-        .then(json => {
-          localStorage.setItem('token', json.token)
+          localStorage.setItem('token', res.data.token)
           commit('auth_success',
             {
-              token: json.token,
-              user: json.user
+              token: res.data.token,
+              user: res.data.user
             })
-          resolve(json)
+          resolve(res)
         })
         .catch(err => {
           commit('auth_error')
@@ -70,11 +59,30 @@ export default {
     return new Promise((resolve, reject) => {
       commit('logout')
       localStorage.removeItem('token')
-      // delete fetch.defaults.headers.common['Authorization']
       resolve()
     })
   },
   nav ({ commit }) {
     commit('nav')
+  },
+  changePassword ({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      const axios = require('axios')
+      console.log(localStorage.getItem('token'))
+      axios.defaults.headers.common['Authorization'] = `JWT ${localStorage.getItem('token')}`
+      console.log(data)
+      axios({
+        method: 'put',
+        url: 'http://localhost:8000/core/change_password',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data)
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
+    })
   }
 }
